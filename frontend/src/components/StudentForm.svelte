@@ -20,6 +20,26 @@
   export let isSubmitting = false;
   export let formError = '';
   export let successMessage = '';
+  export let isEditMode = false;
+  export let studentId = null;
+
+  export function setFormData(data) {
+    form = {
+      fullName: data.fullName || '',
+      studentId: data.studentId || '',
+      email: data.email || '',
+      phone: data.phone || '',
+      age: data.age || '',
+      gender: data.gender || '',
+      department: data.department || '',
+      course: data.course || '',
+      yearOfStudy: data.yearOfStudy || '',
+      address: data.address || ''
+    };
+    errors = {};
+    formError = '';
+    successMessage = '';
+  }
 
   export function resetForm() {
     form = {
@@ -37,6 +57,8 @@
     errors = {};
     formError = '';
     successMessage = '';
+    isEditMode = false;
+    studentId = null;
   }
 
   function validate() {
@@ -67,7 +89,7 @@
       return;
     }
 
-    dispatch('submit', { ...form, age: Number(form.age) });
+    dispatch('submit', { ...form, age: Number(form.age), studentId: isEditMode ? studentId : null });
   }
 </script>
 
@@ -88,8 +110,9 @@
 
     <label class="block">
       <span class="mb-1 block text-sm font-medium text-slate-700">Student ID</span>
-      <input bind:value={form.studentId} class="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-sky-500" placeholder="STU001" />
+      <input bind:value={form.studentId} disabled={isEditMode} class="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-sky-500 disabled:bg-slate-100 disabled:text-slate-500" placeholder="STU001" />
       {#if errors.studentId}<p class="mt-1 text-sm text-red-500">{errors.studentId}</p>{/if}
+      {#if isEditMode}<p class="mt-1 text-xs text-slate-500">Student ID cannot be changed.</p>{/if}
     </label>
 
     <label class="block">
@@ -147,6 +170,6 @@
   </div>
 
   <button type="submit" disabled={isSubmitting} class="rounded-lg bg-sky-600 px-4 py-2 font-semibold text-white transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:bg-sky-300">
-    {isSubmitting ? 'Submitting...' : 'Register Student'}
+    {isSubmitting ? 'Submitting...' : isEditMode ? 'Update Student' : 'Register Student'}
   </button>
 </form>

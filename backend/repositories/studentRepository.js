@@ -25,9 +25,28 @@ export class StudentRepository {
     });
   }
 
+  async findStudentByStudentIdOrEmailExcluding(studentId, email, excludeId) {
+    return this.model.findOne({
+      $and: [
+        { _id: { $ne: excludeId } },
+        {
+          $or: [{ studentId }, { email }]
+        }
+      ]
+    });
+  }
+
   async createStudent(studentData) {
     const student = new this.model(studentData);
     await student.save();
     return student;
+  }
+
+  async updateStudent(id, studentData) {
+    return this.model.findByIdAndUpdate(id, studentData, { new: true, runValidators: true });
+  }
+
+  async deleteStudent(id) {
+    return this.model.findByIdAndDelete(id);
   }
 }

@@ -17,6 +17,14 @@ export function createStudentController(studentService = new StudentService()) {
 
     async addStudent(input) {
       return studentService.registerStudent(input);
+    },
+
+    async updateStudent(id, input) {
+      return studentService.updateStudent(id, input);
+    },
+
+    async deleteStudent(id) {
+      return studentService.deleteStudent(id);
     }
   };
 }

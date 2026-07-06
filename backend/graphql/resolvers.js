@@ -10,6 +10,8 @@ export const studentResolvers = {
     searchStudents: async (_root, { name }) => studentController.searchStudents(name)
   },
   Mutation: {
-    addStudent: async (_root, { input }) => studentController.addStudent(input)
+    addStudent: async (_root, { input }) => studentController.addStudent(input),
+    updateStudent: async (_root, { id, input }) => studentController.updateStudent(id, input),
+    deleteStudent: async (_root, { id }) => studentController.deleteStudent(id)
   }
 };

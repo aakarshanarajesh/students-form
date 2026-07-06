@@ -1,5 +1,7 @@
 <script>
   export let students = [];
+  export let onEdit = null;
+  export let onDelete = null;
 </script>
 
 <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
@@ -13,12 +15,13 @@
           <th class="px-4 py-3">Department</th>
           <th class="px-4 py-3">Course</th>
           <th class="px-4 py-3">Year</th>
+          <th class="px-4 py-3">Actions</th>
         </tr>
       </thead>
       <tbody class="divide-y divide-slate-100 text-sm text-slate-700">
         {#if students.length === 0}
           <tr>
-            <td class="px-4 py-6 text-center text-slate-500" colspan="6">No students found.</td>
+            <td class="px-4 py-6 text-center text-slate-500" colspan="7">No students found.</td>
           </tr>
         {:else}
           {#each students as student}
@@ -29,6 +32,26 @@
               <td class="px-4 py-3">{student.department}</td>
               <td class="px-4 py-3">{student.course}</td>
               <td class="px-4 py-3">{student.yearOfStudy}</td>
+              <td class="px-4 py-3">
+                <div class="flex gap-2">
+                  {#if onEdit}
+                    <button
+                      on:click={() => onEdit(student)}
+                      class="rounded bg-sky-100 px-3 py-1 text-xs font-medium text-sky-700 transition hover:bg-sky-200"
+                    >
+                      Edit
+                    </button>
+                  {/if}
+                  {#if onDelete}
+                    <button
+                      on:click={() => onDelete(student)}
+                      class="rounded bg-red-100 px-3 py-1 text-xs font-medium text-red-700 transition hover:bg-red-200"
+                    >
+                      Delete
+                    </button>
+                  {/if}
+                </div>
+              </td>
             </tr>
           {/each}
         {/if}

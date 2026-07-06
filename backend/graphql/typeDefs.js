@@ -30,6 +30,19 @@ export const typeDefs = gql`
     address: String!
   }
 
+  input UpdateStudentInput {
+    fullName: String
+    studentId: String
+    email: String
+    phone: String
+    age: Int
+    gender: String
+    department: String
+    course: String
+    yearOfStudy: String
+    address: String
+  }
+
   type Query {
     getStudents: [Student!]!
     getStudentById(id: ID!): Student
@@ -38,5 +51,7 @@ export const typeDefs = gql`
 
   type Mutation {
     addStudent(input: StudentInput!): Student!
+    updateStudent(id: ID!, input: UpdateStudentInput!): Student!
+    deleteStudent(id: ID!): Student!
   }
 `;
