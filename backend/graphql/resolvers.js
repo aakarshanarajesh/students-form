@@ -1,7 +1,12 @@
-import { createStudentController } from '../controllers/studentController.js';
+import { StudentController } from '../controllers/studentController.js';
+import { StudentService } from '../services/studentService.js';
+import { StudentRepository } from '../repositories/studentRepository.js';
+import { StudentValidator } from '../validators/studentValidator.js';
 
 // SRP: GraphQL resolvers delegate to the controller layer only.
-const studentController = createStudentController();
+const studentController = new StudentController(
+  new StudentService(new StudentRepository(), new StudentValidator())
+);
 
 export const studentResolvers = {
   Query: {

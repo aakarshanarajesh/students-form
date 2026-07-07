@@ -1,12 +1,21 @@
 import { StudentRepository } from '../repositories/studentRepository.js';
-import { validateStudentInput, validateUpdateStudentInput, validateStudentId } from '../validators/studentValidator.js';
+import { StudentValidator } from '../validators/studentValidator.js';
 
-// SRP: business rules for student registration live in the service layer.
-// DIP: the service depends on a repository abstraction instead of the Mongoose model directly.
-// Composition is preferred over inheritance here, so the service receives a repository instance rather than extending a base class.
+/**
+ * StudentService contains the business rules for managing students.
+ * It validates input, checks for duplicates, and delegates persistence to the repository.
+ */
 export class StudentService {
-  constructor(studentRepository = new StudentRepository()) {
+  /**
+   * @param {StudentRepository} studentRepository
+   * @param {StudentValidator} studentValidator
+   */
+  constructor(
+    studentRepository = new StudentRepository(),
+    studentValidator = new StudentValidator()
+  ) {
     this.studentRepository = studentRepository;
+    this.studentValidator = studentValidator;
   }
 
   async getStudents() {
@@ -14,7 +23,7 @@ export class StudentService {
   }
 
   async getStudentById(id) {
-    const validId = validateStudentId(id);
+    const validId = this.studentValidator.validateStudentId(id);
     return this.studentRepository.getStudentById(validId);
   }
 
@@ -23,7 +32,7 @@ export class StudentService {
   }
 
   async registerStudent(input) {
-    const normalizedInput = validateStudentInput(input);
+    const normalizedInput = this.studentValidator.validateStudentInput(input);
 
     const existingStudent = await this.studentRepository.findStudentByStudentIdOrEmail(
       normalizedInput.studentId,
@@ -41,16 +50,14 @@ export class StudentService {
   }
 
   async updateStudent(id, input) {
-    const validId = validateStudentId(id);
-    const normalizedInput = validateUpdateStudentInput(input);
+    const validId = this.studentValidator.validateStudentId(id);
+    const normalizedInput = this.studentValidator.validateUpdateStudentInput(input);
 
-    // Check if student exists
     const student = await this.studentRepository.getStudentById(validId);
     if (!student) {
       throw new Error('Student not found.');
     }
 
-    // Check for duplicate Student ID or Email during update
     if (normalizedInput.studentId || normalizedInput.email) {
       const existingStudent = await this.studentRepository.findStudentByStudentIdOrEmailExcluding(
         normalizedInput.studentId || student.studentId,
@@ -70,9 +77,8 @@ export class StudentService {
   }
 
   async deleteStudent(id) {
-    const validId = validateStudentId(id);
+    const validId = this.studentValidator.validateStudentId(id);
 
-    // Check if student exists
     const student = await this.studentRepository.getStudentById(validId);
     if (!student) {
       throw new Error('Student not found.');

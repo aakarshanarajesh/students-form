@@ -1,30 +1,38 @@
 import { StudentService } from '../services/studentService.js';
 
-// SRP: the controller only adapts the student workflow to the GraphQL layer.
-export function createStudentController(studentService = new StudentService()) {
-  return {
-    async getStudents() {
-      return studentService.getStudents();
-    },
+/**
+ * StudentController orchestrates student-related requests from GraphQL resolvers.
+ * It exposes methods that map to service layer operations.
+ */
+export class StudentController {
+  /**
+   * @param {StudentService} studentService
+   */
+  constructor(studentService = new StudentService()) {
+    this.studentService = studentService;
+  }
 
-    async getStudentById(id) {
-      return studentService.getStudentById(id);
-    },
+  async getStudents() {
+    return this.studentService.getStudents();
+  }
 
-    async searchStudents(name) {
-      return studentService.searchStudents(name);
-    },
+  async getStudentById(id) {
+    return this.studentService.getStudentById(id);
+  }
 
-    async addStudent(input) {
-      return studentService.registerStudent(input);
-    },
+  async searchStudents(name) {
+    return this.studentService.searchStudents(name);
+  }
 
-    async updateStudent(id, input) {
-      return studentService.updateStudent(id, input);
-    },
+  async addStudent(input) {
+    return this.studentService.registerStudent(input);
+  }
 
-    async deleteStudent(id) {
-      return studentService.deleteStudent(id);
-    }
-  };
+  async updateStudent(id, input) {
+    return this.studentService.updateStudent(id, input);
+  }
+
+  async deleteStudent(id) {
+    return this.studentService.deleteStudent(id);
+  }
 }
