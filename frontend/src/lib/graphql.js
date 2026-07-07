@@ -1,4 +1,4 @@
-const graphqlUrl = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_GRAPHQL_URL) || 'https://students-form-backend.onrender.com/graphql';
+const graphqlUrl = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_GRAPHQL_URL) || 'http://localhost:4000/graphql';
 
 export async function sendGraphQL(query, variables = {}) {
   const response = await fetch(graphqlUrl, {
