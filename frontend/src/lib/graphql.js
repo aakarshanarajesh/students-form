@@ -1,8 +1,4 @@
-const defaultGraphqlUrl = 'http://localhost:4000/graphql';
-const graphqlUrl = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_GRAPHQL_URL)
-  || (typeof globalThis !== 'undefined' && globalThis.location?.origin
-    ? `${globalThis.location.protocol}//${globalThis.location.hostname}:4000/graphql`
-    : defaultGraphqlUrl);
+const graphqlUrl = import.meta.env?.VITE_GRAPHQL_URL || 'http://localhost:4000/graphql';
 
 export async function sendGraphQL(query, variables = {}) {
   try {

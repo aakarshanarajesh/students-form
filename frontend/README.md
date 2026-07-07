@@ -18,10 +18,10 @@ Create a `.env` file based on `.env.example`:
 VITE_GRAPHQL_URL=http://localhost:4000/graphql
 ```
 
-For production deployments on Vercel:
+For production deployments on Vercel, set:
 
 ```
-VITE_GRAPHQL_URL=https://your-backend-api.onrender.com/graphql
+VITE_GRAPHQL_URL=https://students-form-backend.onrender.com/graphql
 ```
 
 ## Running Locally
