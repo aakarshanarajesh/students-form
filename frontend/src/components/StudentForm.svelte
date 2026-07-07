@@ -89,7 +89,7 @@
       return;
     }
 
-    dispatch('submit', { ...form, age: Number(form.age), studentId: isEditMode ? studentId : null });
+    dispatch('submit', { ...form, age: Number(form.age) });
   }
 </script>
 
